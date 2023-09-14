@@ -3,25 +3,39 @@ import { checkToken } from "@/app/libs/checkToken";
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 
+//finished
 export const GET = async () => {
   readDB();
+  
+  //my code
+  //
+  const rooms = DB.rooms;
+  const totalRooms = rooms.length;
+  //
+
   return NextResponse.json({
     ok: true,
     //rooms:
     //totalRooms:
+
+    //
+    rooms,
+    totalRooms,
+    //
   });
 };
 
 export const POST = async (request) => {
   const payload = checkToken();
 
-  // return NextResponse.json(
-  //   {
-  //     ok: false,
-  //     message: "Invalid token",
-  //   },
-  //   { status: 401 }
-  // );
+  if(!payload)
+  return NextResponse.json(
+    {
+      ok: false,
+      message: "Invalid token",
+    },
+    { status: 401 }
+  );
 
   readDB();
 
@@ -42,5 +56,5 @@ export const POST = async (request) => {
     ok: true,
     //roomId,
     message: `Room ${"replace this with room name"} has been created`,
-  });
+  });n
 };
