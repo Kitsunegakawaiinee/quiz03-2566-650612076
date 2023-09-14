@@ -25,10 +25,16 @@ export const GET = async () => {
   });
 };
 
+
+//finished admin create room
 export const POST = async (request) => {
   const payload = checkToken();
+  
 
-  if(!payload)
+  //my code?
+  //
+  console.log(payload.role);
+  if(!payload || (!(payload.role === "SUPER_ADMIN") && !(payload.role === "ADMIN")))
   return NextResponse.json(
     {
       ok: false,
@@ -37,24 +43,36 @@ export const POST = async (request) => {
     { status: 401 }
   );
 
-  readDB();
+  const body = await request.json();
 
-  // return NextResponse.json(
-  //   {
-  //     ok: false,
-  //     message: `Room ${"replace this with room name"} already exists`,
-  //   },
-  //   { status: 400 }
-  // );
+
+  readDB();
+  const check_room = DB.rooms.find(
+    (room) => room.roomName === body.roomName
+  );
+
+  if(check_room)
+  return NextResponse.json(
+    {
+      ok: false,
+      message: `Room ${body.roomName} already exists`,
+    },
+    { status: 400 }
+  );
 
   const roomId = nanoid();
 
   //call writeDB after modifying Database
+  DB.rooms.push({
+    roomID: roomId,
+    roomName: body.roomName
+  });
+
   writeDB();
 
   return NextResponse.json({
     ok: true,
-    //roomId,
-    message: `Room ${"replace this with room name"} has been created`,
+    roomId,
+    message: `Room ${body.roomName} has been created`,
   });n
 };
