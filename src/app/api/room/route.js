@@ -33,7 +33,6 @@ export const POST = async (request) => {
 
   //my code?
   //
-  console.log(payload.role);
   if(!payload || (!(payload.role === "SUPER_ADMIN") && !(payload.role === "ADMIN")))
   return NextResponse.json(
     {
