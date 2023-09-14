@@ -34,11 +34,12 @@ export const POST = async (request) => {
 
   const messageId = nanoid();
 
-  DB.message.push(
+  DB.message.push({
     roomId,
     messageId,
-    message_text
-  );
+    message_text,
+ });
+
   writeDB();
 
   return NextResponse.json({
