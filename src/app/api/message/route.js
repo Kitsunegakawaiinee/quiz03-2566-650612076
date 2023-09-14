@@ -18,16 +18,27 @@ export const GET = async (request) => {
 export const POST = async (request) => {
   readDB();
 
-  // return NextResponse.json(
-  //   {
-  //     ok: false,
-  //     message: `Room is not found`,
-  //   },
-  //   { status: 404 }
-  // );
+  const { roomId, message_text } = await request.json();
+  const have_room = DB.messages.find(
+    (x) => x.roomId === roomId
+  );
+
+  if(!have_room)
+  return NextResponse.json(
+    {
+      ok: false,
+      message: `Room is not found`,
+    },
+    { status: 404 }
+  );
 
   const messageId = nanoid();
 
+  DB.message.push(
+    roomId,
+    messageId,
+    message_text
+  );
   writeDB();
 
   return NextResponse.json({
